@@ -62,18 +62,26 @@
 		F05708E82A9E4420007521D1 /* ToDo */ = {
 			isa = PBXGroup;
 			children = (
+				F089D12B2AA0964700D15751 /* VC */,
 				F05708E92A9E4420007521D1 /* AppDelegate.swift */,
 				F05708EB2A9E4420007521D1 /* SceneDelegate.swift */,
-				F05708ED2A9E4420007521D1 /* MainViewController.swift */,
 				F05708F22A9E4421007521D1 /* Assets.xcassets */,
 				F05708F42A9E4421007521D1 /* LaunchScreen.storyboard */,
 				F05708F72A9E4421007521D1 /* Info.plist */,
+			);
+			path = ToDo;
+			sourceTree = "<group>";
+		};
+		F089D12B2AA0964700D15751 /* VC */ = {
+			isa = PBXGroup;
+			children = (
+				F05708ED2A9E4420007521D1 /* MainViewController.swift */,
 				F0DE74E82A9EFF6D00761DC1 /* tdlViewController.swift */,
 				F0DE74EA2A9EFF7F00761DC1 /* completeViewController.swift */,
 				F0DE74EC2A9F1F1000761DC1 /* tdlTableViewCell.swift */,
 				F0DE74EE2A9F4CA900761DC1 /* AddViewController.swift */,
 			);
-			path = ToDo;
+			path = VC;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
