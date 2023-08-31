@@ -49,7 +49,7 @@ class tdlViewController: UIViewController, UITableViewDelegate, UITableViewDataS
             UIBarButtonItem(
             image: UIImage(systemName: "plus.app"),
             style: .plain,
-            target: nil,
+            target: self,
             action: #selector(pushbtn3))
         }
     

@@ -22,7 +22,6 @@ class tdlTableCell: UITableViewCell {
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         setup()
-        
     }
     private func setup() {
         lbl = UILabel()
