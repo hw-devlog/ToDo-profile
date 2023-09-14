@@ -33,6 +33,7 @@ class addViewcontroller: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
+    
         self.view.addSubview(addTitle)
         self.view.addSubview(addContent)
         
