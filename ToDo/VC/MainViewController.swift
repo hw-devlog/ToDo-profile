@@ -9,11 +9,11 @@ import UIKit
 
 class MainViewController: UIViewController {
     
-    let img: UIImageView = {
-        let img = UIImageView()
-        img.contentMode = .scaleAspectFit
-        img.translatesAutoresizingMaskIntoConstraints = false
-        return img
+    let mainImage: UIImageView = {
+        let mainImage = UIImageView()
+        mainImage.contentMode = .scaleAspectFit
+        mainImage.translatesAutoresizingMaskIntoConstraints = false
+        return mainImage
     }()
     
     lazy var btn1: UIButton = {
@@ -37,41 +37,13 @@ class MainViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
         
-        let url = URL(string: "https://spartacodingclub.kr/css/images/scc-og.jpg")
-        img.load(url: url!)
-
-        self.view.addSubview(img)
-        self.view.addSubview(btn1)
-        self.view.addSubview(btn2)
-        
-        //레이아웃
-        NSLayoutConstraint.activate([
-            img.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            img.widthAnchor.constraint(equalToConstant: 300),
-            img.heightAnchor.constraint(equalToConstant: 150),
-                       
-            img.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 200),
-            img.leadingAnchor.constraint(equalTo: img.leadingAnchor),
-            img.trailingAnchor.constraint(equalTo: img.trailingAnchor),
-            img.bottomAnchor.constraint(equalTo: img.bottomAnchor),
-            
-            btn1.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            btn1.topAnchor.constraint(equalTo: img.bottomAnchor, constant: 20),
-            
-            btn2.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            btn2.topAnchor.constraint(equalTo: btn1.bottomAnchor, constant: 30),
-        ])
+        setup()
+        mainConfigureUI()
     }
-    //버튼 이동
-    @objc func pushbtn1() {
-        let tdlView = tdlViewController()
-        navigationController?.pushViewController(tdlView, animated: true)
-    }
-    
 }
 
+//main화면 로고 이미지
 extension UIImageView {
     func load(url: URL) {
         DispatchQueue.global().async { [weak self] in
@@ -83,6 +55,44 @@ extension UIImageView {
                 }
             }
         }
+    }
+}
+
+extension MainViewController {
+    func mainConfigureUI() {
+        NSLayoutConstraint.activate([
+            mainImage.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            mainImage.widthAnchor.constraint(equalToConstant: 300),
+            mainImage.heightAnchor.constraint(equalToConstant: 150),
+                       
+            mainImage.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 200),
+            mainImage.leadingAnchor.constraint(equalTo: mainImage.leadingAnchor),
+            mainImage.trailingAnchor.constraint(equalTo: mainImage.trailingAnchor),
+            mainImage.bottomAnchor.constraint(equalTo: mainImage.bottomAnchor),
+            
+            btn1.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            btn1.topAnchor.constraint(equalTo: mainImage.bottomAnchor, constant: 20),
+            
+            btn2.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            btn2.topAnchor.constraint(equalTo: btn1.bottomAnchor, constant: 30),
+        ])
+    }
+    
+    func setup() {
+        view.backgroundColor = .white
+        
+        let url = URL(string: "https://spartacodingclub.kr/css/images/scc-og.jpg")
+        mainImage.load(url: url!)
+
+        self.view.addSubview(mainImage)
+        self.view.addSubview(btn1)
+        self.view.addSubview(btn2)
+    }
+    
+    //TodoList 페이지로 이동
+    @objc func pushbtn1() {
+        let tdlView = TodoTableViewController()
+        navigationController?.pushViewController(tdlView, animated: true)
     }
 }
 
