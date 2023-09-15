@@ -35,6 +35,16 @@ class MainViewController: UIViewController {
         return btn2
     }()
     
+    lazy var btn3: UIButton = {
+        let btn3 = UIButton()
+        btn3.setTitle("랜덤 고양이", for: .normal)
+        btn3.setTitleColor(.blue, for: .normal)
+        btn3.backgroundColor = .white
+        btn3.addTarget(self, action: #selector(pushbtn3), for: .touchUpInside)
+        btn3.translatesAutoresizingMaskIntoConstraints = false
+        return btn3
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -74,7 +84,10 @@ extension MainViewController {
             btn1.topAnchor.constraint(equalTo: mainImage.bottomAnchor, constant: 20),
             
             btn2.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            btn2.topAnchor.constraint(equalTo: btn1.bottomAnchor, constant: 30),
+            btn2.topAnchor.constraint(equalTo: btn1.bottomAnchor, constant: 20),
+            
+            btn3.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            btn3.topAnchor.constraint(equalTo: btn2.bottomAnchor, constant: 20)
         ])
     }
     
@@ -87,12 +100,17 @@ extension MainViewController {
         self.view.addSubview(mainImage)
         self.view.addSubview(btn1)
         self.view.addSubview(btn2)
+        self.view.addSubview(btn3)
     }
     
     //TodoList 페이지로 이동
     @objc func pushbtn1() {
         let tdlView = TodoTableViewController()
         navigationController?.pushViewController(tdlView, animated: true)
+    }
+    @objc func pushbtn3() {
+        let randomView = RandomCatController()
+        navigationController?.pushViewController(randomView, animated: true)
     }
 }
 

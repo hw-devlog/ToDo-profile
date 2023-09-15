@@ -12,3 +12,9 @@ struct Todo: Codable {
     var content: String
     var done: Bool
 }
+
+struct RandomImage: Codable {
+    let url: String
+}
+
+
