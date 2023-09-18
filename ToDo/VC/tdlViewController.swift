@@ -15,8 +15,10 @@ class TodoTableViewController: UIViewController {
         todoTableView.register(tdlTableCell.classForCoder(), forCellReuseIdentifier: "Cell")
        return todoTableView
     }()
+
 //    var list: [String] = ["1", "2", "3"]
     var headerList: [String] = ["works", "life"]
+    var todoList: [Todo] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,6 +26,9 @@ class TodoTableViewController: UIViewController {
         setup()
         mainConfigureUI()
         navConfigureUI()
+    }
+    override func viewWillAppear(_ animated: Bool) {
+        todoTableView.reloadData()
     }
 }
 
@@ -60,12 +65,19 @@ extension TodoTableViewController: UITableViewDataSource, UITableViewDelegate {
     
     //섹션의 갯수
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 2
+        return headerList.count
     }
     //섹션별 셀의 갯수
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 //        return list.count
-        return 1
+        if section == 0 {
+            return UserManager.shared.worktodoList.count
+             }
+             else if section == 1{
+                 return 2
+             }
+             
+             return headerList[section].count
     }
     //섹션별 타이틀
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -83,14 +95,15 @@ extension TodoTableViewController: UITableViewDataSource, UITableViewDelegate {
     //셀에 표시될 내용
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell") as! tdlTableCell
-        cell.textLabel?.text = "Title"
+        let target = UserManager.shared.worktodoList[indexPath.row]
+        cell.textLabel?.text = target.title
         cell.detailTextLabel?.text = "subtitle"
 //        cell.todoTitle.text = "Title"
         return cell
     }
     
     @objc func pushbtn3() {
-        let addView = addViewcontroller()
+        let addView = AddViewcontroller()
         navigationController?.pushViewController(addView, animated: true)
         
     }

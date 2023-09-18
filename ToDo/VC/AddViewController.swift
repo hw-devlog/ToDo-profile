@@ -7,26 +7,27 @@
 
 import UIKit
 
-class addViewcontroller: UIViewController {
+class AddViewcontroller: UIViewController {
     
-    lazy var addTitle: UITextField! = {
+    var todoList: [Todo] = []
+    
+     var addTitle: UITextField! = {
         let addTitle = UITextField()
         addTitle.translatesAutoresizingMaskIntoConstraints = false
         addTitle.textAlignment = .natural
         addTitle.font = UIFont.systemFont(ofSize: 16)
         addTitle.layer.borderWidth = 1.0
         addTitle.layer.borderColor = UIColor.black.cgColor
-        
+         addTitle.placeholder = "제목을 입력하세요"
         return addTitle
     }()
-    lazy var addContent: UITextView! = {
+     var addContent: UITextView! = {
         let addContent = UITextView()
         addContent.translatesAutoresizingMaskIntoConstraints = false
         addContent.textAlignment = .natural
         addContent.font = UIFont.systemFont(ofSize: 16)
         addContent.layer.borderWidth = 1.0
         addContent.layer.borderColor = UIColor.black.cgColor
-        
         return addContent
     }()
     
@@ -36,14 +37,8 @@ class addViewcontroller: UIViewController {
     
         self.view.addSubview(addTitle)
         self.view.addSubview(addContent)
+        addConfiguerUI()
         
-        // 작성완료 버튼
-        navigationItem.rightBarButtonItem = UIBarButtonItem(
-        title:"Done",
-        style: .plain,
-        target: nil,
-        action: nil
-        )
         //레이아웃
         addTitle.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
         addTitle.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
@@ -57,6 +52,21 @@ class addViewcontroller: UIViewController {
         //  textField.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: 10).isActive = true
         // textField.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor).isActive = true
         //텍스트뷰 크기 지정
+    }
+}
+extension AddViewcontroller {
+    func addConfiguerUI() {
+        navigationItem.rightBarButtonItem = UIBarButtonItem(
+        title:"Done",
+        style: .plain,
+        target: self,
+        action: #selector(buttonpressed)
+        )
+    }
+    @objc func buttonpressed() {
+        let item: Todo = Todo(title: self.addTitle.text ?? "", content: self.addContent.text ?? "", done: false)
+        UserManager.shared.worktodoList.append(item)
+        self.navigationController?.popViewController(animated: true)
     }
 }
 //
