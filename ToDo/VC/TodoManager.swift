@@ -14,8 +14,7 @@ class TodoManager {
     
      var lifetodoList: [Todo] = []
      var worktodoList: [Todo] = []
-    var lifeDoneTodos: [Todo] = []
-    var workDoneTodos: [Todo] = []
+    var doneTodos: [Todo] = []
     
      let sections = ["Life", "Work"]
 
@@ -68,25 +67,14 @@ class TodoManager {
          loadWorkTodo()
     }
     
-    func addLifeDoneTodo(_ todo: Todo) {
-        lifeDoneTodos.append(todo)
+    func addDoneTodo(_ todo: Todo) {
+        doneTodos.append(todo)
        }
        
        // 완료된 할 일을 제거하는 메서드
-       func removeLifeDoneTodo(_ todo: Todo) {
-           if let index = lifeDoneTodos.firstIndex(where: { $0 === todo }) {
-               lifeDoneTodos.remove(at: index)
-           }
-       }
-    
-    func addWorkDoneTodo(_ todo: Todo) {
-        workDoneTodos.append(todo)
-       }
-       
-       // 완료된 할 일을 제거하는 메서드
-       func removeWorkDoneTodo(_ todo: Todo) {
-           if let index = lifeDoneTodos.firstIndex(where: { $0 === todo }) {
-               workDoneTodos.remove(at: index)
+       func removeDoneTodo(_ todo: Todo) {
+           if let index = doneTodos.firstIndex(where: { $0 === todo }) {
+               doneTodos.remove(at: index)
            }
        }
 }
