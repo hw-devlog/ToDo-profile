@@ -6,11 +6,18 @@
 //
 
 import Foundation
-
-struct Todo: Codable {
+class Todo: Codable {
     var title: String
     var content: String
     var done: Bool
+    var section: String
+    
+    init(title: String, content: String, done: Bool, section: String) {
+           self.title = title
+           self.content = content
+           self.done = done
+           self.section = section
+       }
 }
 
 struct RandomImage: Codable {

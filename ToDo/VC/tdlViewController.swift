@@ -8,29 +8,31 @@
 import UIKit
 
 class TodoTableViewController: UIViewController {
-    
+
     var todoTableView: UITableView = {
         let todoTableView = UITableView()
         todoTableView.translatesAutoresizingMaskIntoConstraints = false
         todoTableView.register(tdlTableCell.classForCoder(), forCellReuseIdentifier: "Cell")
-       return todoTableView
+        return todoTableView
     }()
-
-//    var list: [String] = ["1", "2", "3"]
-    var headerList: [String] = ["works", "life"]
-    var todoList: [Todo] = []
     
+    //    var list: [String] = ["1", "2", "3"]
+    var headerList: [String] = ["Work", "Life"]
+ 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         setup()
         mainConfigureUI()
         navConfigureUI()
     }
     override func viewWillAppear(_ animated: Bool) {
+        TodoManager.shared.loadLifeTodo()
+        TodoManager.shared.loadWorkTodo()
         todoTableView.reloadData()
     }
 }
+ 
 
 extension TodoTableViewController {
     
@@ -50,7 +52,7 @@ extension TodoTableViewController {
     }
     func navConfigureUI() {
         navigationController?.navigationBar.prefersLargeTitles = false
-        self.navigationController?.navigationBar.titleTextAttributes = [.font: UIFont.boldSystemFont(ofSize: 30)]
+        self.navigationController?.navigationBar.titleTextAttributes = [.font: UIFont.boldSystemFont(ofSize: 22)]
         navigationItem.title = "todolist"
         navigationItem.rightBarButtonItem =
             UIBarButtonItem(
@@ -71,10 +73,10 @@ extension TodoTableViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 //        return list.count
         if section == 0 {
-            return UserManager.shared.worktodoList.count
+            return TodoManager.shared.worktodoList.count
              }
              else if section == 1{
-                 return 2
+                 return TodoManager.shared.lifetodoList.count
              }
              
              return headerList[section].count
@@ -94,12 +96,27 @@ extension TodoTableViewController: UITableViewDataSource, UITableViewDelegate {
      }
     //셀에 표시될 내용
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell") as! tdlTableCell
-        let target = UserManager.shared.worktodoList[indexPath.row]
-        cell.textLabel?.text = target.title
-        cell.detailTextLabel?.text = "subtitle"
-//        cell.todoTitle.text = "Title"
-        return cell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell") as! tdlTableCell// Access the appropriate data source based on the section
+        
+        let section = headerList[indexPath.section]
+        
+        if section == "Work" {
+             let workTodos = TodoManager.shared.worktodoList
+             if indexPath.row < workTodos.count {
+                 cell.textLabel?.text = workTodos[indexPath.row].title
+             } else {
+                 cell.textLabel?.text = "No data found"
+             }
+         } else {
+             let lifeTodos = TodoManager.shared.lifetodoList
+             if indexPath.row < lifeTodos.count {
+                 cell.textLabel?.text = lifeTodos[indexPath.row].title
+             } else {
+                 cell.textLabel?.text = "No data found"
+             }
+         }
+         
+         return cell
     }
     
     @objc func pushbtn3() {

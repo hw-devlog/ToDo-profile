@@ -8,9 +8,7 @@
 import UIKit
 
 class AddViewcontroller: UIViewController {
-    
-    var todoList: [Todo] = []
-    
+
      var addTitle: UITextField! = {
         let addTitle = UITextField()
         addTitle.translatesAutoresizingMaskIntoConstraints = false
@@ -34,7 +32,7 @@ class AddViewcontroller: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
-    
+              
         self.view.addSubview(addTitle)
         self.view.addSubview(addContent)
         addConfiguerUI()
@@ -49,9 +47,7 @@ class AddViewcontroller: UIViewController {
         addContent.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         addContent.heightAnchor.constraint(equalToConstant: 500).isActive = true
         addContent.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor, constant: -20).isActive = true
-        //  textField.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: 10).isActive = true
-        // textField.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor).isActive = true
-        //텍스트뷰 크기 지정
+     
     }
 }
 extension AddViewcontroller {
@@ -60,15 +56,47 @@ extension AddViewcontroller {
         title:"Done",
         style: .plain,
         target: self,
-        action: #selector(buttonpressed)
+        action: #selector(saveButtonTapped)
         )
     }
-    @objc func buttonpressed() {
-        let item: Todo = Todo(title: self.addTitle.text ?? "", content: self.addContent.text ?? "", done: false)
-        UserManager.shared.worktodoList.append(item)
-        self.navigationController?.popViewController(animated: true)
+    @objc func saveButtonTapped() {
+        let alertController = UIAlertController(title: "섹션 선택", message: "할일을 어느 섹션에 추가하시겠습니까?", preferredStyle: .actionSheet)
+
+          // "Work" 섹션을 선택하는 액션을 추가
+          let workAction = UIAlertAction(title: "Work", style: .default) { (_) in
+              self.saveTodoInSection("Work")
+              self.navigationController?.popViewController(animated: true)
+          }
+          alertController.addAction(workAction)
+
+          // "Life" 섹션을 선택하는 액션을 추가
+          let lifeAction = UIAlertAction(title: "Life", style: .default) { (_) in
+              self.saveTodoInSection("Life")
+              self.navigationController?.popViewController(animated: true)
+          }
+          alertController.addAction(lifeAction)
+
+          // 취소 액션을 추가
+          let cancelAction = UIAlertAction(title: "취소", style: .cancel, handler: nil)
+          alertController.addAction(cancelAction)
+
+          // UIAlertController를 화면에 표시
+          present(alertController, animated: true, completion: nil)
+    }
+    func saveTodoInSection(_ section: String) {
+        // 선택한 섹션과 데이터를 TodoManager를 통해 저장
+        
+        let todoTitle = addTitle?.text ?? ""
+           let todoContent = addContent?.text ?? ""
+
+           // 선택한 섹션과 데이터를 TodoManager를 통해 저장
+           let newTodo = Todo(title: todoTitle, content: todoContent, done: false, section: section)
+        
+        if section == "Work" {
+            TodoManager.shared.addWorkTodo(newTodo)
+        } else if section == "Life" {
+            TodoManager.shared.addLifeTodo(newTodo)
+        }
     }
 }
-//
-//TodoManager.shared.addTodo(title: "새 할 일", content: "", category: "일반", isCompleted: false)
-//tableView.reloadData()
+
