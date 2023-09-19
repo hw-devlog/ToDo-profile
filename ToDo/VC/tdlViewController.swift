@@ -16,7 +16,6 @@ class TodoTableViewController: UIViewController {
         return todoTableView
     }()
     
-    //    var list: [String] = ["1", "2", "3"]
     var headerList: [String] = ["Work", "Life"]
  
     override func viewDidLoad() {
@@ -118,6 +117,20 @@ extension TodoTableViewController: UITableViewDataSource, UITableViewDelegate {
          
          return cell
     }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+           if editingStyle == .delete {
+               if indexPath.section == 0 {
+                   TodoManager.shared.worktodoList.remove(at: indexPath.row)
+                   tableView.deleteRows(at: [indexPath], with: .fade)
+                   TodoManager.shared.saveWorkTodo()
+               } else if indexPath.section == 1 {
+                   TodoManager.shared.lifetodoList.remove(at: indexPath.row)
+                   tableView.deleteRows(at: [indexPath], with: .fade)
+                   TodoManager.shared.saveLifeTodo()
+               }
+           }
+       }
     
     @objc func pushbtn3() {
         let addView = AddViewcontroller()

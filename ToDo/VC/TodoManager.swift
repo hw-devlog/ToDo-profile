@@ -14,10 +14,12 @@ class TodoManager {
     
      var lifetodoList: [Todo] = []
      var worktodoList: [Todo] = []
-
+    var lifeDoneTodos: [Todo] = []
+    var workDoneTodos: [Todo] = []
+    
      let sections = ["Life", "Work"]
 
-     func saveLifeTodo(_ saveTodo: Todo) {
+     func saveLifeTodo() {
        if let data = try? JSONEncoder().encode(lifetodoList) {
            userDefaults.set(data, forKey: "lifetodoList")
        }
@@ -34,11 +36,11 @@ class TodoManager {
         var updatedTodo = lifetodoList
         updatedTodo.append(newTodo)
          lifetodoList = updatedTodo
-        saveLifeTodo(newTodo)
+        saveLifeTodo()
         loadLifeTodo()
     }
 
-     func saveWorkTodo(_ saveTodo: Todo) {
+     func saveWorkTodo() {
        if let data = try? JSONEncoder().encode(worktodoList) {
            userDefaults.set(data, forKey: "worktodoList")
        }
@@ -62,7 +64,29 @@ class TodoManager {
         var updatedTodo = worktodoList
         updatedTodo.append(newTodo)
          worktodoList = updatedTodo
-         saveWorkTodo(newTodo)
+         saveWorkTodo()
          loadWorkTodo()
     }
+    
+    func addLifeDoneTodo(_ todo: Todo) {
+        lifeDoneTodos.append(todo)
+       }
+       
+       // 완료된 할 일을 제거하는 메서드
+       func removeLifeDoneTodo(_ todo: Todo) {
+           if let index = lifeDoneTodos.firstIndex(where: { $0 === todo }) {
+               lifeDoneTodos.remove(at: index)
+           }
+       }
+    
+    func addWorkDoneTodo(_ todo: Todo) {
+        workDoneTodos.append(todo)
+       }
+       
+       // 완료된 할 일을 제거하는 메서드
+       func removeWorkDoneTodo(_ todo: Todo) {
+           if let index = lifeDoneTodos.firstIndex(where: { $0 === todo }) {
+               workDoneTodos.remove(at: index)
+           }
+       }
 }

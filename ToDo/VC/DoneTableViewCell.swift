@@ -1,17 +1,16 @@
 //
-//  todolistTableViewCell.swift
+//  DoneTableViewCell.swift
 //  ToDo
 //
-//  Created by Hyunwoo Lee on 2023/08/30.
+//  Created by Hyunwoo Lee on 2023/09/19.
 //
 
 import UIKit
 
-class tdlTableCell: UITableViewCell {
+class DoneTableViewCell: UITableViewCell {
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: .subtitle, reuseIdentifier: reuseIdentifier)
-
     }
     
     required init?(coder: NSCoder) {
