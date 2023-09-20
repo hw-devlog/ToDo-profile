@@ -103,6 +103,22 @@ extension TodoTableViewController: UITableViewDataSource, UITableViewDelegate {
         header.textLabel?.textColor = UIColor.black
         header.textLabel?.adjustsFontSizeToFitWidth = true
      }
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+         
+         let footerView = UIView.init(frame: CGRect.init(x: 0, y: 0, width: tableView.frame.width, height: 20))
+         footerView.backgroundColor = .systemBackground
+         let lineView = UIView()
+         footerView.addSubview(lineView)
+         
+         lineView.translatesAutoresizingMaskIntoConstraints = false
+         lineView.backgroundColor = .lightGray
+         lineView.leadingAnchor.constraint(equalTo: footerView.leadingAnchor, constant: 20).isActive = true
+         lineView.trailingAnchor.constraint(equalTo: footerView.trailingAnchor, constant: -20).isActive = true
+         lineView.heightAnchor.constraint(equalToConstant: 1).isActive = true
+         lineView.centerYAnchor.constraint(equalTo: footerView.centerYAnchor, constant: 0).isActive = true
+
+         return footerView
+     }
     //셀에 표시될 내용
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell") as! tdlTableCell// Access the appropriate data source based on the section
