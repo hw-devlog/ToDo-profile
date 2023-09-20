@@ -10,6 +10,7 @@ import UIKit
 class DoneViewController: UIViewController {
     
     var headerList: [String] = ["Work", "Life"]
+    var doneTodos: [Todo] = []
     
     private var doneTableView: UITableView = {
         let doneTableView = UITableView()
@@ -20,10 +21,13 @@ class DoneViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        doneTodos = TodoManager.shared.doneTodos
+
+        TodoManager.shared.moveCompletedTodosToDone()
         setup()
         mainConfigureUI()
     }
+
 }
 extension DoneViewController {
     
@@ -45,13 +49,22 @@ extension DoneViewController {
 extension DoneViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+        return TodoManager.shared.doneTodos.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell") as! DoneTableViewCell
-        return cell
+        
+        let doneTodo = doneTodos[indexPath.row]
+        cell.textLabel?.text = doneTodo.title // 셀에 todo의 제목을 표시
+       return cell
     }
-    
+    func tableView(_ tableView: UITableView,commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            TodoManager.shared.doneTodos.remove(at: indexPath.row)
+            tableView.deleteRows(at: [indexPath], with: .fade)
+            TodoManager.shared.saveDoneTodos()
+        }
+    }
     
 }

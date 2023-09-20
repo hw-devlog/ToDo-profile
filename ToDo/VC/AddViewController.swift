@@ -90,7 +90,7 @@ extension AddViewcontroller {
            let todoContent = addContent?.text ?? ""
 
            // 선택한 섹션과 데이터를 TodoManager를 통해 저장
-           let newTodo = Todo(title: todoTitle, content: todoContent, done: false, section: section)
+        let newTodo = Todo(id: 0, title: todoTitle, content: todoContent, done: false, section: section)
         
         if section == "Work" {
             TodoManager.shared.addWorkTodo(newTodo)

@@ -8,7 +8,8 @@
 import UIKit
 
 class DoneTableViewCell: UITableViewCell {
-
+    var todo: Todo?
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: .subtitle, reuseIdentifier: reuseIdentifier)
     }

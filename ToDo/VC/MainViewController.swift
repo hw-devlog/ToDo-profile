@@ -31,6 +31,7 @@ class MainViewController: UIViewController {
         btn2.setTitle("완료한일 보기", for: .normal)
         btn2.setTitleColor(.blue, for: .normal)
         btn2.backgroundColor = .white
+        btn2.addTarget(self, action: #selector(pushbtn2), for: .touchUpInside)
         btn2.translatesAutoresizingMaskIntoConstraints = false
         return btn2
     }()
@@ -107,6 +108,10 @@ extension MainViewController {
     @objc func pushbtn1() {
         let tdlView = TodoTableViewController()
         navigationController?.pushViewController(tdlView, animated: true)
+    }
+    @objc func pushbtn2() {
+        let doneView = DoneViewController()
+        navigationController?.pushViewController(doneView, animated: true)
     }
     @objc func pushbtn3() {
         let randomView = RandomCatController()
