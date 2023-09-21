@@ -9,14 +9,14 @@ import UIKit
 
 class MainViewController: UIViewController {
     
-    let mainImage: UIImageView = {
+    private let mainImage: UIImageView = {
         let mainImage = UIImageView()
         mainImage.contentMode = .scaleAspectFit
         mainImage.translatesAutoresizingMaskIntoConstraints = false
         return mainImage
     }()
     
-    lazy var btn1: UIButton = {
+    private var btn1: UIButton = {
         let btn1 = UIButton()
         btn1.setTitle("할일 확인하기", for: .normal)
         btn1.setTitleColor(.blue, for: .normal)
@@ -26,7 +26,7 @@ class MainViewController: UIViewController {
         return btn1
     }()
     
-    lazy var btn2: UIButton = {
+    private var btn2: UIButton = {
         let btn2 = UIButton()
         btn2.setTitle("완료한일 보기", for: .normal)
         btn2.setTitleColor(.blue, for: .normal)
@@ -36,7 +36,7 @@ class MainViewController: UIViewController {
         return btn2
     }()
     
-    lazy var btn3: UIButton = {
+    private var btn3: UIButton = {
         let btn3 = UIButton()
         btn3.setTitle("랜덤 고양이", for: .normal)
         btn3.setTitleColor(.blue, for: .normal)
@@ -44,6 +44,16 @@ class MainViewController: UIViewController {
         btn3.addTarget(self, action: #selector(pushbtn3), for: .touchUpInside)
         btn3.translatesAutoresizingMaskIntoConstraints = false
         return btn3
+    }()
+    
+    private var btn4: UIButton = {
+        let btn4 = UIButton()
+        btn4.setTitle("ProfileDesignViewController", for: .normal)
+        btn4.setTitleColor(.blue, for: .normal)
+        btn4.backgroundColor = .white
+        btn4.translatesAutoresizingMaskIntoConstraints = false
+        btn4.addTarget(self, action: #selector(pushbtn4), for: .touchUpInside)
+        return btn4
     }()
     
     override func viewDidLoad() {
@@ -88,7 +98,11 @@ extension MainViewController {
             btn2.topAnchor.constraint(equalTo: btn1.bottomAnchor, constant: 20),
             
             btn3.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            btn3.topAnchor.constraint(equalTo: btn2.bottomAnchor, constant: 20)
+            btn3.topAnchor.constraint(equalTo: btn2.bottomAnchor, constant: 20),
+            
+            btn4.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            btn4.topAnchor.constraint(equalTo: btn3.bottomAnchor, constant: 20)
+            
         ])
     }
     
@@ -102,6 +116,7 @@ extension MainViewController {
         self.view.addSubview(btn1)
         self.view.addSubview(btn2)
         self.view.addSubview(btn3)
+        self.view.addSubview(btn4)
     }
     
     //TodoList 페이지로 이동
@@ -116,6 +131,11 @@ extension MainViewController {
     @objc func pushbtn3() {
         let randomView = RandomCatController()
         navigationController?.pushViewController(randomView, animated: true)
+    }
+    @objc func pushbtn4() {
+        let presentView = ProfileDesignViewController()
+        presentView.modalPresentationStyle = UIModalPresentationStyle.fullScreen
+         self.present(presentView, animated: true, completion: nil)
     }
 }
 
