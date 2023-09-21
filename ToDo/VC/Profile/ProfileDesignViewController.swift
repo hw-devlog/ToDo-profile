@@ -77,7 +77,6 @@ class ProfileDesignViewController: UIViewController {
         userPostSub.attributedText = NSMutableAttributedString(string: "post", attributes: [NSAttributedString.Key.kern: -0.3])
         userPostSub.sizeToFit()
         userPostSub.translatesAutoresizingMaskIntoConstraints = false
-
         return userPostSub
     }()
     
@@ -88,7 +87,6 @@ class ProfileDesignViewController: UIViewController {
         userFollower.frame = CGRect(x: 0, y: 0, width: 10, height: 22)
         userFollower.textColor = UIColor(red: 0, green: 0, blue: 0, alpha: 1)
         userFollower.font = UIFont(name: "OpenSans-Bold", size: 16.5)
-        // Line height: 22.47 pt
         userFollower.textAlignment = .center
         userFollower.text = "0"
         userFollower.translatesAutoresizingMaskIntoConstraints = false
@@ -104,7 +102,6 @@ class ProfileDesignViewController: UIViewController {
         userFollowerSub.attributedText = NSMutableAttributedString(string: "Follower", attributes: [NSAttributedString.Key.kern: -0.3])
         userFollowerSub.sizeToFit()
         userFollowerSub.translatesAutoresizingMaskIntoConstraints = false
-
         return userFollowerSub
     }()
     
@@ -115,11 +112,9 @@ class ProfileDesignViewController: UIViewController {
         userFollowing.frame = CGRect(x: 0, y: 0, width: 10, height: 22)
         userFollowing.textColor = UIColor(red: 0, green: 0, blue: 0, alpha: 1)
         userFollowing.font = UIFont(name: "OpenSans-Bold", size: 16.5)
-        // Line height: 22.47 pt
         userFollowing.textAlignment = .center
         userFollowing.text = "0"
         userFollowing.translatesAutoresizingMaskIntoConstraints = false
-        
         return userFollowing
     }()
     
@@ -132,7 +127,6 @@ class ProfileDesignViewController: UIViewController {
         userFollowingSub.attributedText = NSMutableAttributedString(string: "Following", attributes: [NSAttributedString.Key.kern: -0.3])
         userFollowingSub.sizeToFit()
         userFollowingSub.translatesAutoresizingMaskIntoConstraints = false
-        
         return userFollowingSub
     }()
     
@@ -144,7 +138,6 @@ class ProfileDesignViewController: UIViewController {
         userId.attributedText = NSMutableAttributedString(string: "르탄이", attributes: [NSAttributedString.Key.kern: -0.5])
         userId.sizeToFit()
         userId.translatesAutoresizingMaskIntoConstraints = false
-        
         return userId
     }()
     
@@ -165,8 +158,6 @@ class ProfileDesignViewController: UIViewController {
         userDomain.frame = CGRect(x: 0, y: 0, width: 121, height: 19)
         userDomain.textColor = UIColor(red: 0.061, green: 0.274, blue: 0.492, alpha: 1)
         userDomain.font = UIFont(name: "OpenSans-Regular", size: 14)
-        // Line height: 19.07 pt
-        // (identical to box height)
         userDomain.attributedText = NSMutableAttributedString(string: "spartacodingclub.kr", attributes: [NSAttributedString.Key.kern: -0.5])
         userDomain.translatesAutoresizingMaskIntoConstraints = false
         userDomain.sizeToFit()
@@ -182,7 +173,6 @@ class ProfileDesignViewController: UIViewController {
         followBtn.layer.backgroundColor = UIColor(red: 0.22, green: 0.596, blue: 0.953, alpha: 1).cgColor
         followBtn.layer.cornerRadius = 4
         followBtn.translatesAutoresizingMaskIntoConstraints = false
-    
         return followBtn
     }()
     
@@ -231,7 +221,6 @@ class ProfileDesignViewController: UIViewController {
         sectionIndicator.frame = CGRect(x: 0, y: 0, width: 124, height: 1)
         sectionIndicator.layer.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 1).cgColor
         sectionIndicator.translatesAutoresizingMaskIntoConstraints = false
-        
         return sectionIndicator
     }()
     
@@ -241,6 +230,20 @@ class ProfileDesignViewController: UIViewController {
         postCollectionView.translatesAutoresizingMaskIntoConstraints = false
         return postCollectionView
     }()
+    var bottomBar: UIView = {
+       let bottomBar = UIView()
+        bottomBar.layer.backgroundColor = UIColor(red: 0.98, green: 0.98, blue: 0.98, alpha: 1).cgColor
+        bottomBar.translatesAutoresizingMaskIntoConstraints = false
+        return bottomBar
+    }()
+    
+    var bottomBtn: UIButton = {
+        let bottomBtn = UIButton()
+        bottomBtn.frame = CGRect(x: 0, y: 0, width: 22.5, height: 22.75)
+        bottomBtn.setImage(UIImage(named: "profile"), for: .normal)
+        bottomBtn.translatesAutoresizingMaskIntoConstraints = false
+        return bottomBtn
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -248,7 +251,6 @@ class ProfileDesignViewController: UIViewController {
         postCollectionView.delegate = self
         postCollectionView.dataSource = self
    
-
         profileConfiguerUI()
         itemConfiguerUI()
     }
@@ -280,6 +282,8 @@ extension ProfileDesignViewController {
         view.addSubview(gridButton)
         view.addSubview(sectionIndicator)
         view.addSubview(postCollectionView)
+        view.addSubview(bottomBar)
+        view.addSubview(bottomBtn)
         
         NSLayoutConstraint.activate([
             backbtn.widthAnchor.constraint(equalToConstant: 21),
@@ -369,8 +373,16 @@ extension ProfileDesignViewController {
             
             postCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             postCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            postCollectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-            postCollectionView.topAnchor.constraint(equalTo: sectionIndicator.bottomAnchor)
+            postCollectionView.bottomAnchor.constraint(equalTo: bottomBar.topAnchor),
+            postCollectionView.topAnchor.constraint(equalTo: sectionIndicator.bottomAnchor),
+            
+            bottomBar.heightAnchor.constraint(equalToConstant: 84),
+            bottomBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            bottomBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            bottomBar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            
+            bottomBtn.topAnchor.constraint(equalTo: bottomBar.topAnchor, constant: 19),
+            bottomBtn.centerXAnchor.constraint(equalTo: bottomBar.centerXAnchor)
             
         ])
     }
@@ -394,12 +406,11 @@ extension ProfileDesignViewController: UICollectionViewDelegate, UICollectionVie
         guard let cell =  postCollectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as? ProfileDesignViewCell else { return ProfileDesignViewCell() }
         
         cell.postImage.image = UIImage(systemName: "pencil")
-        
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-          let cellWidth = postCollectionView.frame.width / 3 - 2
+          let cellWidth = (postCollectionView.frame.width - 4) / 3
           return CGSize(width: cellWidth, height: cellWidth)
       }
       

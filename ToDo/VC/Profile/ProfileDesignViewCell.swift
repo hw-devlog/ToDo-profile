@@ -38,7 +38,6 @@ extension ProfileDesignViewCell {
             postImage.leftAnchor.constraint(equalTo: self.leftAnchor),
             postImage.topAnchor.constraint(equalTo: self.topAnchor),
             postImage.bottomAnchor.constraint(equalTo: self.bottomAnchor)
-            
         ])
     }
 }
