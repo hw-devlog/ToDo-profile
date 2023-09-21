@@ -97,12 +97,12 @@ extension TodoTableViewController: UITableViewDataSource, UITableViewDelegate {
     //헤더뷰 속성
     func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
          guard let header = view as? UITableViewHeaderFooterView else { return }
-        header.translatesAutoresizingMaskIntoConstraints = false
-        header.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: 100)
+        header.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: 20)
         header.textLabel?.font = UIFont.boldSystemFont(ofSize: 16)
         header.textLabel?.textColor = UIColor.black
-        header.textLabel?.adjustsFontSizeToFitWidth = true
+        header.textLabel?.sizeToFit()
      }
+
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
          
          let footerView = UIView.init(frame: CGRect.init(x: 0, y: 0, width: tableView.frame.width, height: 20))
