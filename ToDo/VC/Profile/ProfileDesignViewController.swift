@@ -241,6 +241,7 @@ class ProfileDesignViewController: UIViewController {
         let bottomBtn = UIButton()
         bottomBtn.frame = CGRect(x: 0, y: 0, width: 22.5, height: 22.75)
         bottomBtn.setImage(UIImage(named: "profile"), for: .normal)
+        bottomBtn.addTarget(self, action: #selector(profileButtonTapped), for: .touchUpInside)
         bottomBtn.translatesAutoresizingMaskIntoConstraints = false
         return bottomBtn
     }()
@@ -389,6 +390,10 @@ extension ProfileDesignViewController {
     
     @objc func backButtonTapped() {
         dismiss(animated: true, completion: nil)
+    }
+    
+    @objc func profileButtonTapped() {
+        self.present(ProfileViewController(), animated: true)
     }
 }
 

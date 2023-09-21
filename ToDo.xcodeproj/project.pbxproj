@@ -14,6 +14,7 @@
 		F05708F32A9E4421007521D1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F05708F22A9E4421007521D1 /* Assets.xcassets */; };
 		F05708F62A9E4421007521D1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F05708F42A9E4421007521D1 /* LaunchScreen.storyboard */; };
 		F072130D2AB451FB008AE364 /* RandomCatController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F072130C2AB451FB008AE364 /* RandomCatController.swift */; };
+		F07DE2482ABCA7B600758895 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F07DE2472ABCA7B600758895 /* ProfileViewController.swift */; };
 		F0AA75302ABB00AA003CB303 /* ProfileDesignViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0AA752F2ABB00AA003CB303 /* ProfileDesignViewController.swift */; };
 		F0CFF6D32ABC456D0039CFA3 /* OpenSans-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F0CFF6C92ABC456D0039CFA3 /* OpenSans-LightItalic.ttf */; };
 		F0CFF6D42ABC456D0039CFA3 /* OpenSans-Semibold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F0CFF6CA2ABC456D0039CFA3 /* OpenSans-Semibold.ttf */; };
@@ -44,6 +45,7 @@
 		F05708F52A9E4421007521D1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F05708F72A9E4421007521D1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F072130C2AB451FB008AE364 /* RandomCatController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RandomCatController.swift; sourceTree = "<group>"; };
+		F07DE2472ABCA7B600758895 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		F0AA752F2ABB00AA003CB303 /* ProfileDesignViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileDesignViewController.swift; sourceTree = "<group>"; };
 		F0CFF6C92ABC456D0039CFA3 /* OpenSans-LightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-LightItalic.ttf"; sourceTree = "<group>"; };
 		F0CFF6CA2ABC456D0039CFA3 /* OpenSans-Semibold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Semibold.ttf"; sourceTree = "<group>"; };
@@ -184,6 +186,7 @@
 			children = (
 				F0AA752F2ABB00AA003CB303 /* ProfileDesignViewController.swift */,
 				F0CFF6DE2ABC73220039CFA3 /* ProfileDesignViewCell.swift */,
+				F07DE2472ABCA7B600758895 /* ProfileViewController.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -272,6 +275,7 @@
 				F0DE74EB2A9EFF7F00761DC1 /* DoneViewController.swift in Sources */,
 				F0DE74ED2A9F1F1000761DC1 /* tdlTableViewCell.swift in Sources */,
 				F0AA75302ABB00AA003CB303 /* ProfileDesignViewController.swift in Sources */,
+				F07DE2482ABCA7B600758895 /* ProfileViewController.swift in Sources */,
 				F0DE74EF2A9F4CA900761DC1 /* AddViewController.swift in Sources */,
 				F0DE74E92A9EFF6D00761DC1 /* tdlViewController.swift in Sources */,
 				F05708EE2A9E4420007521D1 /* MainViewController.swift in Sources */,
