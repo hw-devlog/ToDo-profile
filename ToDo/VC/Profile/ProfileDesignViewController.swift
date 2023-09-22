@@ -17,7 +17,6 @@ class ProfileDesignViewController: UIViewController {
         backbtn.frame = CGRect(x: 0, y: 0, width: 21, height: 17.5)
         backbtn.tintColor = UIColor(red: 0, green: 0, blue: 0, alpha: 1)
         backbtn.translatesAutoresizingMaskIntoConstraints = false
-        backbtn.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
         return backbtn
     }()
     
@@ -241,7 +240,6 @@ class ProfileDesignViewController: UIViewController {
         let bottomBtn = UIButton()
         bottomBtn.frame = CGRect(x: 0, y: 0, width: 22.5, height: 22.75)
         bottomBtn.setImage(UIImage(named: "profile"), for: .normal)
-        bottomBtn.addTarget(self, action: #selector(profileButtonTapped), for: .touchUpInside)
         bottomBtn.translatesAutoresizingMaskIntoConstraints = false
         return bottomBtn
     }()
@@ -254,6 +252,8 @@ class ProfileDesignViewController: UIViewController {
    
         profileConfiguerUI()
         itemConfiguerUI()
+        backbtn.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
+        bottomBtn.addTarget(self, action: #selector(profileButtonTapped), for: .touchUpInside)
     }
 }
 
@@ -393,7 +393,11 @@ extension ProfileDesignViewController {
     }
     
     @objc func profileButtonTapped() {
-        self.present(ProfileViewController(), animated: true)
+        let user = User(name: "르탄", age: 27)
+        let profilemodel = ProfileViewModel(user: user)
+        let profileView = ProfileViewController(viewModel: profilemodel)
+        profileView.modalPresentationStyle = .fullScreen
+        self.present(profileView, animated: true)
     }
 }
 
