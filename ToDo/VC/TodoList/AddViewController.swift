@@ -53,50 +53,42 @@ class AddViewcontroller: UIViewController {
 extension AddViewcontroller {
     func addConfiguerUI() {
         navigationItem.rightBarButtonItem = UIBarButtonItem(
-        title:"Done",
-        style: .plain,
-        target: self,
-        action: #selector(saveButtonTapped)
+            title: "Done",
+            style: .plain,
+            target: self,
+            action: #selector(saveButtonTapped)
         )
     }
+    
     @objc func saveButtonTapped() {
         let alertController = UIAlertController(title: "섹션 선택", message: "할일을 어느 섹션에 추가하시겠습니까?", preferredStyle: .actionSheet)
 
-          // "Work" 섹션을 선택하는 액션을 추가
-          let workAction = UIAlertAction(title: "Work", style: .default) { (_) in
-              self.saveTodoInSection("Work")
-              self.navigationController?.popViewController(animated: true)
-          }
-          alertController.addAction(workAction)
-
-          // "Life" 섹션을 선택하는 액션을 추가
-          let lifeAction = UIAlertAction(title: "Life", style: .default) { (_) in
-              self.saveTodoInSection("Life")
-              self.navigationController?.popViewController(animated: true)
-          }
-          alertController.addAction(lifeAction)
-
-          // 취소 액션을 추가
-          let cancelAction = UIAlertAction(title: "취소", style: .cancel, handler: nil)
-          alertController.addAction(cancelAction)
-
-          // UIAlertController를 화면에 표시
-          present(alertController, animated: true, completion: nil)
-    }
-    func saveTodoInSection(_ section: String) {
-        // 선택한 섹션과 데이터를 TodoManager를 통해 저장
-        
-        let todoTitle = addTitle?.text ?? ""
-           let todoContent = addContent?.text ?? ""
-
-           // 선택한 섹션과 데이터를 TodoManager를 통해 저장
-        let newTodo = Todo(id: 0, title: todoTitle, content: todoContent, done: false, section: section)
-        
-        if section == "Work" {
-            TodoManager.shared.addWorkTodo(newTodo)
-        } else if section == "Life" {
-            TodoManager.shared.addLifeTodo(newTodo)
+        let workAction = UIAlertAction(title: "Work", style: .default) { (_) in
+            self.saveTodoInSection("Work")
         }
+        alertController.addAction(workAction)
+
+        let lifeAction = UIAlertAction(title: "Life", style: .default) { (_) in
+            self.saveTodoInSection("Life")
+        }
+        alertController.addAction(lifeAction)
+
+        let cancelAction = UIAlertAction(title: "취소", style: .cancel, handler: nil)
+        alertController.addAction(cancelAction)
+
+        present(alertController, animated: true, completion: nil)
+    }
+    
+    func saveTodoInSection(_ section: String) {
+        guard let title = addTitle.text, let content = addContent.text else {
+            return
+        }
+
+        // Core Data를 사용하여 Todo를 저장
+        CoreDataManager.shared.createTask(title: title, content: content, isCompleted: false, section: section)
+
+        navigationController?.popViewController(animated: true)
     }
 }
+
 

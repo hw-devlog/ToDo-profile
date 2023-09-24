@@ -8,10 +8,7 @@
 import UIKit
 
 class DoneViewController: UIViewController {
-    
-    var headerList: [String] = ["Work", "Life"]
-    var doneTodos: [Todo] = []
-    
+   
     private var doneTableView: UITableView = {
         let doneTableView = UITableView()
         doneTableView.translatesAutoresizingMaskIntoConstraints = false
@@ -21,11 +18,14 @@ class DoneViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        doneTodos = TodoManager.shared.doneTodos
-
-        TodoManager.shared.moveCompletedTodosToDone()
+        
+        doneTableView.reloadData()
         setup()
         mainConfigureUI()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        doneTableView.reloadData()
     }
 
 }
@@ -45,26 +45,41 @@ extension DoneViewController {
             doneTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor)
         ])
     }
+ 
 }
 extension DoneViewController: UITableViewDelegate, UITableViewDataSource {
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return TodoManager.shared.doneTodos.count
+        // Core Data에서 완료된 작업을 가져옵니다.
+        let completedTasks = CoreDataManager.shared.fetchAllTasks().filter { $0.iscompleted == true }
+        return completedTasks.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell") as! DoneTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
         
-        let doneTodo = doneTodos[indexPath.row]
-        cell.textLabel?.text = doneTodo.title // 셀에 todo의 제목을 표시
-       return cell
-    }
-    func tableView(_ tableView: UITableView,commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            TodoManager.shared.doneTodos.remove(at: indexPath.row)
-            tableView.deleteRows(at: [indexPath], with: .fade)
-            TodoManager.shared.saveDoneTodos()
-        }
+        // Core Data에서 완료된 작업을 가져옵니다.
+        let completedTasks = CoreDataManager.shared.fetchAllTasks().filter { $0.iscompleted == true }
+        
+        // 현재 인덱스 패스의 완료된 작업으로 셀을 구성합니다.
+        let task = completedTasks[indexPath.row]
+        cell.textLabel?.text = task.title // title이 Tasks 엔터티의 속성 이름이라고 가정합니다.
+        
+        return cell
     }
     
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            // Core Data에서 완료된 작업을 가져옵니다.
+            var completedTasks = CoreDataManager.shared.fetchAllTasks().filter { $0.iscompleted == true }
+            
+            // 현재 인덱스 패스의 완료된 작업을 삭제합니다.
+            if indexPath.row < completedTasks.count {
+                let taskToDelete = completedTasks.remove(at: indexPath.row)
+                CoreDataManager.shared.deleteTask(taskToDelete)
+                
+                // 테이블 뷰에서도 해당 행을 삭제합니다.
+                tableView.deleteRows(at: [indexPath], with: .fade)
+            }
+        }
+    }
 }

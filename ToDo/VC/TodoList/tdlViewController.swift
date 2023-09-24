@@ -9,9 +9,7 @@ import UIKit
 
 class TodoTableViewController: UIViewController {
     
-    var todo: Todo?
-    var worktodoList: [Todo] = [] // 작업 목록
-    var lifetodoList: [Todo] = []
+    var tasksInSection: [Tasks] = []
     
     var todoTableView: UITableView = {
         let todoTableView = UITableView()
@@ -24,9 +22,7 @@ class TodoTableViewController: UIViewController {
  
     override func viewDidLoad() {
         super.viewDidLoad()
-        TodoManager.shared.loadLifeTodo()
-        TodoManager.shared.loadWorkTodo()
-        
+
         setup()
         mainConfigureUI()
         navConfigureUI()
@@ -36,10 +32,6 @@ class TodoTableViewController: UIViewController {
         todoTableView.reloadData()
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        TodoManager.shared.saveLifeTodo()
-        TodoManager.shared.saveWorkTodo()
-    }
 }
  
 
@@ -81,15 +73,14 @@ extension TodoTableViewController: UITableViewDataSource, UITableViewDelegate {
     }
     //섹션별 셀의 갯수
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if section == 0 {
-            return TodoManager.shared.worktodoList.count
-             }
-             else if section == 1 {
-                 return TodoManager.shared.lifetodoList.count
-             }
-             return 0
-             //return headerList[section].count
-    }
+         if section == 0 {
+             return CoreDataManager.shared.fetchTasksInSection("Work").count
+         } else if section == 1 {
+             return CoreDataManager.shared.fetchTasksInSection("Life").count
+         }
+         return 0
+     }
+    
     //섹션별 타이틀
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return headerList[section]
@@ -121,22 +112,25 @@ extension TodoTableViewController: UITableViewDataSource, UITableViewDelegate {
      }
     //셀에 표시될 내용
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell") as! tdlTableCell// Access the appropriate data source based on the section
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell") as! tdlTableCell
         let section = indexPath.section
-          let row = indexPath.row
-    
-          var todo: Todo
-          if section == 0 {
-              todo = TodoManager.shared.worktodoList[row]
-          } else {
-              todo = TodoManager.shared.lifetodoList[row]
-          }
-          cell.textLabel?.text = todo.title // 셀에 todo의 제목을 표시
-          cell.todo = todo // todo 객체를 셀에 설정
+        let row = indexPath.row
 
-         return cell
+        var tasksInSection: [Tasks] = []
+
+        if section == 0 {
+            tasksInSection = CoreDataManager.shared.fetchTasksInSection("Work")
+        } else {
+            tasksInSection = CoreDataManager.shared.fetchTasksInSection("Life")
+        }
+
+        let task = tasksInSection[row]
+
+        cell.textLabel?.text = task.title // 셀에 작업 제목 표시
+        cell.task = task // 셀에 작업 객체 설정
+
+        return cell
     }
-    
     func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let completeAction = UIContextualAction(style: .normal, title: "done") { [weak self] (action, view, completionHandler) in
             guard let self = self else { return }
@@ -144,35 +138,21 @@ extension TodoTableViewController: UITableViewDataSource, UITableViewDelegate {
             // 해당 셀을 완료 처리
             if indexPath.section == 0 {
                 // 첫 번째 섹션 (work)에서 완료 처리
-                if indexPath.row < TodoManager.shared.worktodoList.count {
-                    TodoManager.shared.worktodoList[indexPath.row].done = true
-                    // 해당 작업을 doneTodos에 추가
-                    let completedTodo = TodoManager.shared.worktodoList.remove(at: indexPath.row)
-                    TodoManager.shared.doneTodos.append(completedTodo)
-                    // 해당 작업을 worktodoList에서 제거
-                    TodoManager.shared.removeTodoFromWorkList(at: indexPath.row)
+                if indexPath.row < CoreDataManager.shared.fetchTasksInSection("Work").count {
+                    let task = CoreDataManager.shared.fetchTasksInSection("Work")[indexPath.row]
+                    task.iscompleted = true // done 상태를 true로 변경
+                    CoreDataManager.shared.saveContext() // 변경사항 저장
                 }
             } else if indexPath.section == 1 {
                 // 두 번째 섹션 (life)에서 완료 처리
-                if indexPath.row < TodoManager.shared.lifetodoList.count {
-                    TodoManager.shared.lifetodoList[indexPath.row].done = true
-                    // 해당 작업을 doneTodos에 추가
-                    let completedTodo = TodoManager.shared.lifetodoList.remove(at: indexPath.row)
-                    TodoManager.shared.doneTodos.append(completedTodo)
-                    // 해당 작업을 lifetodoList에서 제거
-                    TodoManager.shared.removeTodoFromLifeList(at: indexPath.row)
+                if indexPath.row < CoreDataManager.shared.fetchTasksInSection("Life").count {
+                    let task = CoreDataManager.shared.fetchTasksInSection("Life")[indexPath.row]
+                    task.iscompleted = true // done 상태를 true로 변경
+                    CoreDataManager.shared.saveContext() // 변경사항 저장
+
                 }
             }
-
-            // 완료된 항목을 doneTodos로 이동
-            TodoManager.shared.moveCompletedTodosToDone()
-
-            // 테이블 뷰에서 해당 셀 삭제
-            
-            tableView.beginUpdates()
-            tableView.deleteRows(at: [indexPath], with: .fade)
-            tableView.endUpdates()
-            
+            todoTableView.reloadData()
             // completionHandler 호출
             completionHandler(true)
         }
@@ -180,20 +160,35 @@ extension TodoTableViewController: UITableViewDataSource, UITableViewDelegate {
         let configuration = UISwipeActionsConfiguration(actions: [completeAction])
         return configuration
     }
+    
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+           return true
+       }
 
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            if indexPath.section == 0 {
-                TodoManager.shared.worktodoList.remove(at: indexPath.row)
-                tableView.deleteRows(at: [indexPath], with: .fade)
-                TodoManager.shared.saveWorkTodo()
-            } else if indexPath.section == 1 {
-                TodoManager.shared.lifetodoList.remove(at: indexPath.row)
-                tableView.deleteRows(at: [indexPath], with: .fade)
-                TodoManager.shared.saveLifeTodo()
+            let section = indexPath.section
+            let row = indexPath.row
+
+            if section == 0 {
+                // 첫 번째 섹션 (Work)에서 삭제
+                let tasksInSection = CoreDataManager.shared.fetchTasksInSection("Work")
+                if row < tasksInSection.count {
+                    let taskToDelete = tasksInSection[row]
+                    CoreDataManager.shared.deleteTask(taskToDelete)
+                    todoTableView.deleteRows(at: [indexPath], with: .fade)
+                }
+            } else if section == 1 {
+                // 두 번째 섹션 (Life)에서 삭제
+                let tasksInSection = CoreDataManager.shared.fetchTasksInSection("Life")
+                if row < tasksInSection.count {
+                    let taskToDelete = tasksInSection[row]
+                    CoreDataManager.shared.deleteTask(taskToDelete)
+                    todoTableView.deleteRows(at: [indexPath], with: .fade)
+                }
             }
         }
-        }
+    }
     
     @objc func pushbtn3() {
         let addView = AddViewcontroller()

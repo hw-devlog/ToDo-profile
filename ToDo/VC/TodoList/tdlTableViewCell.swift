@@ -9,7 +9,7 @@ import UIKit
 
 class tdlTableCell: UITableViewCell {
  
-    var todo: Todo?
+    var task: Tasks?
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: .subtitle , reuseIdentifier: reuseIdentifier)
